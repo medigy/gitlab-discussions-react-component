@@ -1,5 +1,5 @@
 {
-  "name": "gitlab-discussions-react-component",
+  "name": "@medigy/gitlab-discussions-react-component",
   "version": "1.0.0",
   "description": "React component for discussions of an issue in a GitLab project",
   "author": "Shanil Sasikumar",
@@ -64,9 +64,12 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.7"
   },
   "files": [
     "dist"
-  ]
+  ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
 }
