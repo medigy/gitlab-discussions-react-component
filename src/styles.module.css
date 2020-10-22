@@ -1,0 +1,87 @@
+.gitlabDiscussions {
+  margin: 15px;
+  display: block;
+}
+.gitlabCommentsOuter {
+  border: 1px solid #e3e3e3;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  background: white;
+}
+.gitLabComments {
+  margin-bottom: 6px;
+  padding-top: 5px;
+  padding-bottom: 0px;
+}
+.gitLabCommentAvatar {
+  padding-top: 5px;
+  padding-left: 5px;
+  width: 60px;
+  float: left;
+  margin-right: 8px;
+}
+.gitLabCommentBody {
+  float: left;
+  width: 95%;
+  display: block;
+  position: relative;
+  font-size: 14px;
+}
+.replyImage {
+  width: 60px;
+}
+.gitCommentSubmitButton{
+  margin-bottom: 15px !important;
+  float: right;
+}
+.gitLabCommentIcons {
+  position: absolute;
+  right: 3px;
+  top: 2px;
+}
+.gitLabCommentIcons .gitLabReplyCommentIcon,
+.gitLabCommentIcons .gitLabEditCommentIcon,
+.gitLabCommentIcons .gitLabMoreCommentIcon {
+  cursor: pointer;
+  color: #bcbcbc !important;
+  padding-left: 5px;
+}
+
+.gitLabCommentIcons .gitLabReplyCommentIcon:hover,
+.gitLabCommentIcons .gitLabEditCommentIcon:hover,
+.gitLabCommentIcons .gitLabEditCommentIcon:hover {
+  color: #111 !important;
+}
+
+.gitLabReplyBox {
+  margin-left: 5px !important;
+  margin-top: 5px !important;
+}
+
+.replyCommentBox {
+  width: 100%;
+}
+
+.gitLabReplyCommentForm div .ck-sticky-panel__content,
+.gitLabReplyCommentForm div .ck-editor__main {
+  width: 97% !important;
+}
+.ck-editor__editable_inline {
+  min-height: 100px;
+}
+.pullRight {
+  float: right;
+}
+@media (max-width: 1239px) {
+  .gitLabCommentBody {
+    width: 83% !important;
+  }
+}
+@media (max-width: 452px) {
+  .gitLabCommentBody {
+    width: 70% !important;
+  }
+  .replyCommentBox {
+    width: 95%;
+  }
+}
