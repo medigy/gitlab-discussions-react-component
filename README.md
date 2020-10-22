@@ -35,7 +35,7 @@ Then include the component in your render method like the following
     <GitLabDiscussions
         projectID={<projectID>}
         gitLabURL={<GitLabURL>}
-        issueID={<userID>}
+        issueID={<issueID>}
         accessToken={<GitLabAccessToken>}
     />
 ```
