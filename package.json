@@ -1,6 +1,6 @@
 {
   "name": "@medigy/gitlab-discussions-react-component",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React component for discussions of an issue in a GitLab project",
   "author": "Shanil Sasikumar",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "@ckeditor/ckeditor5-react": "^2.1.0",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@types/ckeditor": "^4.9.10",
     "moment": "^2.29.1",
     "react-moment": "^0.9.7"
