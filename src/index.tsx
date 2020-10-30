@@ -171,21 +171,23 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                         </Box>
                         <Box component='div' className={styles.gitLabCommentBody}>
                           <Box component='div' className={styles.gitLabCommentAuthorName}>
-                            <Box component='span' fontWeight='fontWeightMedium'>{comment.author.name}
+                            <Box component='span' className={styles.gitLabCommentUserTime} fontWeight='fontWeightMedium'>{comment.author.name}
                            - <Moment fromNow>{comment.created_at}</Moment>
                             </Box>
 
                             <Box className={styles.gitLabCommentIcons} component='span'>
                               {j === 0 ?
-                                <Box component='span' className={styles.gitLabReplyCommentIcon}>
+                                <Box component='span' className={styles.gitLabReplyCommentIcon} title='Reply'>
                                   <ChatBubbleOutlineIcon onClick={() => this.changeToRichText(comments.id, true)} />
                                 </Box> : null}
-                              <Box component='span' className={styles.gitLabEditCommentIcon}>
-                                <EditIcon onClick={() => this.showEditComment(comment.id)} />
-                              </Box>
-                              <Box component='span' className={styles.gitLabMoreCommentIcon}>
-                                <MoreVertIcon aria-controls='simple-menu' aria-haspopup='true' onClick={(e) => this.moreButtonClick(e, comment.id)} />
-                              </Box>
+                              {this.state.userId === comment.author.id ?
+                                <Box component='span' className={styles.gitLabEditCommentIcon} title='Edit'>
+                                  <EditIcon onClick={() => this.showEditComment(comment.id)} />
+                                </Box> : undefined}
+                              {this.state.userId === comment.author.id ?
+                                <Box component='span' className={styles.gitLabMoreCommentIcon} title='More'>
+                                  <MoreVertIcon aria-controls='simple-menu' aria-haspopup='true' onClick={(e) => this.moreButtonClick(e, comment.id)} />
+                                </Box> : undefined}
                               <Menu
                                 id='simple-menu'
                                 anchorEl={this.state.anchorEl}
@@ -241,7 +243,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                           <Grid className={styles.replyImage}>
                             <Avatar alt={this.state.userName} src={this.state.userAvatar} />
                           </Grid>
-                          <Grid xs={10} item className={styles.replyCommentBox}>
+                          <Grid xs={9} sm={10} item className={styles.replyCommentBox}>
                             <form className={styles.gitLabReplyCommentForm}>
                               {!this.state.richText[comments.id] ?
                                 <TextField size='small' className={styles.replyCommentBox} name='replyComment' placeholder='Reply..' variant='outlined' onClick={() => this.changeToRichText(comments.id, true)} />
