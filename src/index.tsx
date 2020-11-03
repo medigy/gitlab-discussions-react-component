@@ -1,5 +1,5 @@
-import * as React from 'react'
-import styles from './styles.module.css'
+import * as React from 'react';
+import styles from './styles.module.css';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';

@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.'
+import GitLabDiscussions from ".";
 
-describe('ExampleComponent', () => {
+describe('GitLabDiscussions', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(GitLabDiscussions).toBeTruthy()
   })
 })
