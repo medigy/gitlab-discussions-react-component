@@ -27,7 +27,7 @@
   position: relative;
   font-size: 14px;
 }
-.replyImage {
+.gitLabReplyImage {
   width: 60px;
 }
 .gitCommentSubmitButton {
@@ -38,6 +38,8 @@
   position: absolute;
   right: 3px;
   top: 2px;
+  width: 50%;
+  text-align: right;
 }
 .gitLabCommentIcons .gitLabReplyCommentIcon,
 .gitLabCommentIcons .gitLabEditCommentIcon,
@@ -58,28 +60,26 @@
   margin-top: 5px !important;
 }
 
-.replyCommentBox {
-  width: 100%;
+.gitLabReplyCommentBox {
+  width: calc(100% - 70px);
+}
+.gitLabReplyCommentText {
+  width: 93%;
 }
 
 .gitLabReplyCommentForm div .ck-sticky-panel__content,
 .gitLabReplyCommentForm div .ck-editor__main {
   width: 97% !important;
 }
-.ck-editor__editable_inline {
-  min-height: 100px;
-}
-.pullRight {
+
+.gitLabPullRight {
   float: right;
+  margin-right: 0px !important;
 }
-@media (max-width: 640px) {
-  .gitLabCommentUserTime {
-    width: 130px;
-    display: inline-block;
-  }
+.gitLabPullRight button{
+  padding: 5px 10px;
 }
-@media (max-width: 452px) {
-  .replyCommentBox {
-    width: 95%;
-  }
+.gitLabCommentUserTime {
+  width: 50%;
+  display: inline-block;
 }

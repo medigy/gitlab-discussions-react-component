@@ -229,7 +229,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                 }}
                                 data={comment.body}
                               />
-                              <Box component='div' className={styles.pullRight} mt={1} mr={1}>
+                              <Box component='div' className={styles.gitLabPullRight} mt={1} mr={1}>
                                 <Button variant='contained' color='primary' onClick={() => this.cancelEdit(comment.id)}>Cancel</Button>{'  '}
                                 <Button className='dqa-edit-comment' disabled={this.state.disableEdit[comment.id]} type='submit' variant='contained' color='primary'
                                   onClick={() => this.editComment(comments.id, comment.id)}>Edit Comment</Button>
@@ -240,13 +240,13 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                       </Grid>
                       {((comments.notes).length) - 1 === j ?
                         <Grid container className={styles.gitLabReplyBox}>
-                          <Grid className={styles.replyImage}>
+                          <Grid className={styles.gitLabReplyImage}>
                             <Avatar alt={this.state.userName} src={this.state.userAvatar} />
                           </Grid>
-                          <Grid xs={9} sm={10} item className={styles.replyCommentBox}>
+                          <Grid item className={styles.gitLabReplyCommentBox}>
                             <form className={styles.gitLabReplyCommentForm}>
                               {!this.state.richText[comments.id] ?
-                                <TextField size='small' className={styles.replyCommentBox} name='replyComment' placeholder='Reply..' variant='outlined' onClick={() => this.changeToRichText(comments.id, true)} />
+                                <TextField size='small' className={styles.gitLabReplyCommentText} name='replyComment' placeholder='Reply..' variant='outlined' onClick={() => this.changeToRichText(comments.id, true)} />
                                 :
                                 <Box component='div' mt={4}>
                                   <CKEditor
@@ -274,7 +274,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                       }
                                     }}
                                   />
-                                  <Box component='div' className={styles.pullRight} mt={1} mr={1}>
+                                  <Box component='div' className={styles.gitLabPullRight} mt={1} mr={1}>
                                     <Button variant='contained' color='primary' onClick={() => this.changeToRichText(comments.id, false)}>Cancel</Button>{'  '}
                                     <Button className='git-lab-reply-comment-btn' disabled={this.state.disableReply[comments.id]}
                                       variant='contained' color='primary' onClick={() => this.onSubmitReplyComment(comments.id)}>Comment</Button>
