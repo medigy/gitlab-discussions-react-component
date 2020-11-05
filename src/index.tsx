@@ -8,8 +8,6 @@ import TextField from '@material-ui/core/TextField';
 import Moment from 'react-moment';
 import ChatBubbleOutlineIcon from '@material-ui/icons/ChatBubbleOutline';
 import EditIcon from '@material-ui/icons/Edit';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -20,7 +18,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 interface IDiscussionsProps {
   readonly gitLabURL: string;
   readonly projectID: number;
@@ -78,10 +77,6 @@ interface IComments {
   readonly individual_note: boolean;
   readonly notes: Array<INotes>;
 }
-interface IEditor {
-  readonly getData: Function;
-  setData: Function
-}
 interface ICommentBody {
   id: number;
   issue_iid: number;
@@ -104,7 +99,6 @@ interface IDelete {
   readonly statusText: string;
 }
 class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsState>  {
-  private editorInstance!: IEditor;
   private divToFocus: React.RefObject<HTMLInputElement>;
   constructor(props: IDiscussionsProps) {
     super(props);
@@ -165,7 +159,6 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                   return comment.system === false ?
                     <Box component='div' key={`git-lab-comment-note-${j}`} className={styles.gitLabComments}>
                       <Grid container>
-
                         <Box component='span' className={styles.gitLabCommentAvatar}>
                           <Avatar alt={comment.author.name} src={comment.author.avatar_url} />
                         </Box>
@@ -182,7 +175,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                 </Box> : null}
                               {this.state.userId === comment.author.id ?
                                 <Box component='span' className={styles.gitLabEditCommentIcon} title='Edit'>
-                                  <EditIcon onClick={() => this.showEditComment(comment.id)} />
+                                  <EditIcon onClick={() => this.showEditComment(comment.id, comment.body)} />
                                 </Box> : undefined}
                               {this.state.userId === comment.author.id ?
                                 <Box component='span' className={styles.gitLabMoreCommentIcon} title='More'>
@@ -202,24 +195,13 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                           {!this.state.editComment[comment.id] ?
                             <Box component='span' className={styles.gitLabCommentBody} dangerouslySetInnerHTML={{ __html: comment.body }} /> :
                             <Box component='div' mt={4}>
-                              <CKEditor
-                                config={{
-                                  toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
-                                }}
-                                editor={ClassicEditor}
-                                onInit={() => {
-                                  const a: { [key: string]: boolean } = {};
-                                  a[comment.id] = true;
-                                  this.setState({
-                                    editedContent: comment.body,
-                                    disableEdit: a
-                                  });
-                                }}
-                                onChange={(_event: React.ChangeEvent<HTMLInputElement>, editor: IEditor) => {
-                                  const textComment: string = editor.getData();
+                              <ReactQuill
+                                value={this.state.editedContent}
+                                onChange={(textComment: string) => {
+                                  textComment = textComment.trim();
                                   this.setState({ editedContent: textComment });
                                   const a: { [key: string]: boolean } = {};
-                                  if (!textComment) {
+                                  if ((textComment.replace(/<[^>]+>/g, '')).length < 1) {
                                     a[comment.id] = true;
                                     this.setState({ disableEdit: a });
                                   } else {
@@ -227,7 +209,6 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                     this.setState({ disableEdit: a });
                                   }
                                 }}
-                                data={comment.body}
                               />
                               <Box component='div' className={styles.gitLabPullRight} mt={1} mr={1}>
                                 <Button variant='contained' color='primary' onClick={() => this.cancelEdit(comment.id)}>Cancel</Button>{'  '}
@@ -249,23 +230,13 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                 <TextField size='small' className={styles.gitLabReplyCommentText} name='replyComment' placeholder='Reply..' variant='outlined' onClick={() => this.changeToRichText(comments.id, true)} />
                                 :
                                 <Box component='div' mt={4}>
-                                  <CKEditor
-                                    config={{
-                                      toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
-                                    }}
-                                    editor={ClassicEditor}
-                                    onInit={() => {
-                                      const a: { [key: string]: boolean } = {};
-                                      a[comments.id] = true;
-                                      this.setState({
-                                        disableReply: a
-                                      });
-                                    }}
-                                    onChange={(_event: React.ChangeEvent<HTMLInputElement>, editor: IEditor) => {
-                                      const textComment: string = editor.getData();
+                                  <ReactQuill
+                                    value={this.state.replyComment}
+                                    onChange={(textComment: string) => {
+                                      textComment = textComment.trim();
                                       this.setState({ replyComment: textComment });
                                       const a: { [key: string]: boolean } = {};
-                                      if (!textComment) {
+                                      if ((textComment.replace(/<[^>]+>/g, '')).length < 1) {
                                         a[comments.id] = true;
                                         this.setState({ disableReply: a });
                                       } else {
@@ -274,6 +245,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                                       }
                                     }}
                                   />
+
                                   <Box component='div' className={styles.gitLabPullRight} mt={1} mr={1}>
                                     <Button variant='contained' color='primary' onClick={() => this.changeToRichText(comments.id, false)}>Cancel</Button>{'  '}
                                     <Button className='git-lab-reply-comment-btn' disabled={this.state.disableReply[comments.id]}
@@ -289,23 +261,16 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
               </Box> : undefined
           })
         }
-        < Box component='div' mt={3} >
-          <CKEditor
-            id='submitComment'
-            onInit={(editor: IEditor) => {
-              this.editorInstance = editor;
-            }}
-            config={{
-              toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote']
-            }}
-            editor={ClassicEditor}
-            onChange={(_event: React.ChangeEvent<HTMLInputElement>, editor: IEditor) => {
-              const textComment: string = editor.getData();
+        <Box component='div' mt={3}>
+          <ReactQuill
+            value={this.state.commentText}
+            onChange={(textComment: string) => {
+              textComment = textComment.trim();
               this.setState({ commentText: textComment });
-              if (textComment) {
-                this.setState({ disableCommentButton: false });
-              } else {
+              if ((textComment.replace(/<[^>]+>/g, '')).length < 1) {
                 this.setState({ disableCommentButton: true });
+              } else {
+                this.setState({ disableCommentButton: false });
               }
             }}
           />
@@ -391,12 +356,13 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
 
     this.postData(commentBody, commentApiUrl, params).then((commentResponse: IComments[]) => {
       if (commentResponse) {
-        this.editorInstance.setData('');
         this.setState({
           successMessage: true,
           successNotification: 'Comment added successfully',
           showError: false,
-          errorMessage: ''
+          errorMessage: '',
+          disableCommentButton: true,
+          commentText: ''
         });
         if (this.divToFocus.current) {
           this.divToFocus.current.scrollIntoView({ block: 'start', behavior: 'smooth' });
@@ -439,24 +405,32 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
   }
   private changeToRichText = (commentId: string, value: boolean): void => {
     const a: { [key: string]: boolean } = {};
+    const b: { [key: string]: boolean } = {};
     a[commentId] = value;
+    b[commentId] = true;
     this.setState({
-      richText: a
+      richText: a,
+      disableReply: b,
+      replyComment: ''
     });
   }
 
-  private showEditComment = (commentId: string): void => {
+  private showEditComment = (commentId: string, comment: string): void => {
     const a: { [key: string]: boolean } = {};
+    const b: { [key: string]: boolean } = {};
     a[commentId] = true;
+    b[commentId] = true;
     this.setState({
-      editComment: a
+      editComment: a,
+      editedContent: comment,
+      disableEdit: b
     });
   }
 
   private cancelEdit = (id: string): void => {
     const a: { [key: string]: boolean } = {};
     a[id] = false;
-    this.setState({ editComment: a });
+    this.setState({ editComment: a, editedContent: '' });
   }
 
   private editComment = (discussionId: string, noteId: string) => {
