@@ -213,7 +213,7 @@ class GitLabDiscussions extends React.Component<IDiscussionsProps, IDiscussionsS
                               <Box component='div' className={styles.gitLabPullRight} mt={1} mr={1}>
                                 <Button variant='contained' color='primary' onClick={() => this.cancelEdit(comment.id)}>Cancel</Button>{'  '}
                                 <Button className='dqa-edit-comment' disabled={this.state.disableEdit[comment.id]} type='submit' variant='contained' color='primary'
-                                  onClick={() => this.editComment(comments.id, comment.id)}>Edit Comment</Button>
+                                  onClick={() => this.editComment(comments.id, comment.id)}>Edit</Button>
                               </Box>
                             </Box>}
                           <div className='clearfix'></div>
